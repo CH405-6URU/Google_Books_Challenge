@@ -10,11 +10,14 @@ import androidx.compose.material.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.layout.ContentScale
+import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
+import coil.compose.AsyncImage
+import coil.request.ImageRequest
 import com.example.googlebookschallenge.data.BookUiState
 import com.example.googlebookschallenge.data.Item
-import com.example.googlebookschallenge.data.topClass
 import com.example.googlebookschallenge.ui.theme.GoogleBooksChallengeTheme
 
 
@@ -51,7 +54,7 @@ val mockImageSource = listOf(
 }*/
 
 @Composable
-fun BookScreen(books: List<Item>) {
+fun BookScreen(books: MutableList<Item>) {
     Log.d("BookScreen", books.toString())
     LazyVerticalGrid(
         columns = GridCells.Adaptive(150.dp),
@@ -79,13 +82,13 @@ fun BookCard(book: Item) {
         ) {
             // to be replaced with async image later
             Text(text = book.volumeInfo.title)
-            Text(text = book.id)
-            /*AsyncImage(
-                model = ImageRequest.Builder(context = LocalContext.current).data(book.thumbnail)
+            // Text(text = book.id)
+            AsyncImage(
+                model = ImageRequest.Builder(context = LocalContext.current).data((book.volumeInfo.imageLinks.large)?.replace("http","https"))
                     .crossfade(true).build(),
                 contentDescription = null,
-                Modifier.padding(4.dp)
-            )*/
+                contentScale = ContentScale.FillBounds
+            )
         }
     }
 }
